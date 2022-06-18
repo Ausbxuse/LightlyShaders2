@@ -16,9 +16,7 @@
 #include <KPluginFactory>
 #include <KAboutData>
 
-K_PLUGIN_FACTORY_WITH_JSON(LightlyShadersConfigFactory,
-                           "lightlyshaders_config.json",
-                           registerPlugin<LightlyShadersConfig>();)
+K_PLUGIN_CLASS(LightlyShadersConfig)
 
 
 class ConfigDialog : public QWidget , public Ui::Form
@@ -42,6 +40,7 @@ public:
         , disabledForMaximized("disabled_for_maximized")
         , cornersType("corners_type")
         , squircleRatio("squircle_ratio")
+        , shadowOffset("shadow_offset")
         , defaultRoundness(5)
         , defaultOutline(false)
         , defaultAlpha(15)
@@ -49,10 +48,11 @@ public:
         , defaultDisabledForMaximized(false)
         , defaultCornersType(KWin::LightlyShadersEffect::RoundedCorners)
         , defaultSquircleRatio(12)
+        , defaultShadowOffset(2)
     {}
     LightlyShadersConfig *q;
-    QString roundness, outline, alpha, darkTheme, disabledForMaximized, cornersType, squircleRatio;
-    QVariant defaultRoundness, defaultOutline, defaultAlpha, defaultDarkTheme, defaultDisabledForMaximized, defaultCornersType, defaultSquircleRatio;
+    QString roundness, outline, alpha, darkTheme, disabledForMaximized, cornersType, squircleRatio, shadowOffset;
+    QVariant defaultRoundness, defaultOutline, defaultAlpha, defaultDarkTheme, defaultDisabledForMaximized, defaultCornersType, defaultSquircleRatio, defaultShadowOffset;
     ConfigDialog *ui;
 };
 
@@ -84,6 +84,7 @@ LightlyShadersConfig::load()
     d->ui->disabledForMaximized->setChecked(conf.readEntry(d->disabledForMaximized, d->defaultDisabledForMaximized).toBool());
     d->ui->cornersType->setCurrentIndex(d->ui->cornersType->findData(conf.readEntry(d->cornersType, d->defaultCornersType).toInt()));
     d->ui->squircleRatio->setValue(conf.readEntry(d->squircleRatio, d->defaultSquircleRatio).toInt());
+    d->ui->shadowOffset->setValue(conf.readEntry(d->shadowOffset, d->defaultShadowOffset).toInt());
     emit changed(false);
 }
 
@@ -99,6 +100,7 @@ LightlyShadersConfig::save()
     conf.writeEntry(d->disabledForMaximized, d->ui->disabledForMaximized->isChecked());
     conf.writeEntry(d->cornersType, d->ui->cornersType->currentData());
     conf.writeEntry(d->squircleRatio, d->ui->squircleRatio->value());
+    conf.writeEntry(d->shadowOffset, d->ui->shadowOffset->value());
     conf.sync();
     emit changed(false);
     OrgKdeKwinEffectsInterface interface(QStringLiteral("org.kde.KWin"),
@@ -118,6 +120,7 @@ LightlyShadersConfig::defaults()
     d->ui->disabledForMaximized->setChecked(d->defaultDisabledForMaximized.toBool());
     d->ui->cornersType->setCurrentIndex(d->ui->cornersType->findData(d->defaultCornersType.toInt()));
     d->ui->squircleRatio->setValue(d->defaultSquircleRatio.toInt());
+    d->ui->shadowOffset->setValue(d->defaultShadowOffset.toInt());
     emit changed(true);
 }
 

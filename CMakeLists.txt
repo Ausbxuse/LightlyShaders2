@@ -121,11 +121,16 @@ install(FILES shaders_110/lightlyshaders.frag DESTINATION ${DATAPATH}/kwin/shade
 install(FILES shaders_110/lightlyshaders_diff.frag DESTINATION ${DATAPATH}/kwin/shaders/1.10)
 
 #config
+function(kwin_add_effect_config name)
+    list(REMOVE_ITEM ARGV ${name})
+    kcoreaddons_add_plugin(${name} INSTALL_NAMESPACE "kwin/effects/configs" SOURCES ${ARGV})
+endfunction()
+
 project(kwin4_lightlyshaders_config)
 set(kwin4_lightlyshaders_config_SOURCES lightlyshaders_config.cpp)
 ki18n_wrap_ui(kwin4_lightlyshaders_config_SOURCES lightlyshaders_config.ui)
 qt5_add_dbus_interface(kwin4_lightlyshaders_config_SOURCES org.kde.kwin.Effects.xml kwineffects_interface)
-add_library(kwin4_lightlyshaders_config MODULE ${kwin4_lightlyshaders_config_SOURCES})
+kwin_add_effect_config(kwin4_lightlyshaders_config ${kwin4_lightlyshaders_config_SOURCES})
 target_link_libraries(kwin4_lightlyshaders_config
         PUBLIC
             kwineffects
@@ -136,7 +141,5 @@ target_link_libraries(kwin4_lightlyshaders_config
             KF5::I18n
             KF5::GlobalAccel
         )
-kcoreaddons_desktop_to_json(kwin4_lightlyshaders_config lightlyshaders_config.desktop)
-install(TARGETS kwin4_lightlyshaders_config DESTINATION ${MODULEPATH}/kwin/effects/configs)
-install(FILES lightlyshaders_config.desktop DESTINATION ${SERVICES_INSTALL_DIR}/kwin)
+
 

@@ -1,7 +1,0 @@
-/usr/lib/qt/plugins/kwin/effects/plugins/kwin4_effect_lightlyshaders.so
-/usr/share/kwin/shaders/1.40/lightlyshaders.frag
-/usr/share/kwin/shaders/1.40/lightlyshaders_diff.frag
-/usr/share/kwin/shaders/1.10/lightlyshaders.frag
-/usr/share/kwin/shaders/1.10/lightlyshaders_diff.frag
-/usr/lib/qt/plugins/kwin/effects/configs/kwin4_lightlyshaders_config.so
-/usr/share/kservices5/kwin/lightlyshaders_config.desktop
